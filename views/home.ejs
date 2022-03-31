@@ -2,10 +2,14 @@
 
 <h1>Home</h1>
 <%= starting %>
-<br>
-<br>
 
-<h1> <%= postTitle %> </h1>
-<p> <%= postBody %></p>
+<% let i = 0%>
+<% for(element in newPost){%>
+    
+    <h1><%= newPost[i].title%></h1>
+    <p><%= newPost[i].body%></p>
+    <% i++;%>
+    <%} %>
+
 
 <%- include("partials/footer")-%>

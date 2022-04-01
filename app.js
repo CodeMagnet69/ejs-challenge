@@ -19,6 +19,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
 app.get("/", function (req, res) {
+
   res.render("home", {
     starting: homeStartingContent,
     about: aboutContent,
@@ -41,24 +42,26 @@ app.get("/compose", function (req, res) {
 })
 
 app.get("/posts/:postname", function (req, res) {
-  let pagename = req.params.postname;
-  let lowerCased = lodash.lowerCase(pagename)
-  let kebabCased = lodash.kebabCase(lowerCased);
-  console.log(kebabCased);
 
-  let i = 0;
-  for (element in newPosts) {
-    if (newPosts[i].title === kebabCased) {
-      console.log("Match found!")
-    } else {
-      if (newPosts[i].title === lowerCased) {
-        console.log("Match found!")
-      } else {
-        console.log("Match not found...")
-      }
-    }
-    i++
+  function kebaber(postTitle) {
+    let Kebabed = lodash.kebabCase(postTitle);
+    return Kebabed;
   }
+  function lowerCaser(postTitle) {
+    let lowerCased = lodash.lowerCase(postTitle);
+    return lowerCased;
+  }
+
+  // let i = 0;
+  for (const element of newPosts) {
+    if (kebaber(element.title) === kebaber(req.params.postname) || lowerCaser(element.title) === lowerCaser(req.params.postname)) {
+      res.render("post", {postTitle: element.title, postBody: element.body})
+    } else{
+
+      
+    }
+  // i++;
+}
 })
 
 app.post("/compose", function (req, res) {
@@ -75,4 +78,4 @@ app.post("/compose", function (req, res) {
 
 app.listen(3000, function () {
   console.log("Server started on port 3000");
-});
+})
